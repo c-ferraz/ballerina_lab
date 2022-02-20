@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+    title: Ballerina Lab
+    description: My Ballerina Playground
+    version: 0.0.1
+
+
+components:
+    securitySchemes:
+        basicAuth:
+            type: http
+            scheme: basic
+    schemas:
+        ServiceStatus:
+            type: object
+            properties:
+                status:
+                    type: string
+                    example: "UP"
+
+paths:
+    /healthcheck:
+        get:
+            description: API HealthCheck
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ServiceStatus'
+    /convertJson:
+        post:
+            description: Converts the a json into the specified format
+            parameters:
+                -   in: query
+                    name: format
+                    schema:
+                        type: string
+                        enum: ['xml', 'yaml', 'csv', 'text']
+                    required: true
+                    description: Output format
+                -   in: query
+                    name: xmlRoot
+                    schema:
+                        type: string
+                    required: false
+                    description: XML Root element name. Mandatory if format is 'xml'.
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/xml:
+                            schema:
+                                type: object
+                        application/yaml:
+                            schema:
+                                type: object
+                        text/csv:
+                            schema:
+                                type: string
+                        text/plain:
+                            schema:
+                                type: string
+                '400':
+                    description: Bad Request
+                    content:
+                        text/plain:
+                            examples:
+                                InvalidFormat:
+                                    value: Incorrect data format specified
+                                MissingRootParam:
+                                    value: The parameter 'xmlRoot' is required for 'xml' conversion
+    /authTest:
+        get:
+            security:
+                -   basicAuth: []
+            responses:
+                '200':
+                    description: OK
+                    content:
+                      text/plain:
+                          schema:
+                              example: Basic Authentication successful
+                '401':
+                    description: Unauthorized
+                    content:
+                      text/plain:
+                          schema:
+                              example: Username and/or Password invalid.

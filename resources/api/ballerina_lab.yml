@@ -2,8 +2,7 @@ openapi: 3.0.0
 info:
     title: Ballerina Lab
     description: My Ballerina Playground
-    version: 0.0.1
-
+    version: 0.0.2
 
 components:
     securitySchemes:
@@ -17,35 +16,46 @@ components:
                 status:
                     type: string
                     example: "UP"
+        TestJson:
+            type: object
+            required:
+              - "name"
+            properties:
+                name:
+                    type: string
+                lastName:
+                    type: string
+                comment:
+                    type: string
 
 paths:
     /healthcheck:
         get:
             description: API HealthCheck
             responses:
-                '200':
+                "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/ServiceStatus'
+                                $ref: "#/components/schemas/ServiceStatus"
     /convertJson:
         post:
             description: Converts the a json into the specified format
             parameters:
-                -   in: query
-                    name: format
-                    schema:
-                        type: string
-                        enum: ['xml', 'yaml', 'csv', 'text']
-                    required: true
-                    description: Output format
-                -   in: query
-                    name: xmlRoot
-                    schema:
-                        type: string
-                    required: false
-                    description: XML Root element name. Mandatory if format is 'xml'.
+                - in: query
+                  name: format
+                  schema:
+                      type: string
+                      enum: ["xml", "yaml", "csv", "text"]
+                  required: true
+                  description: Output format
+                - in: query
+                  name: xmlRoot
+                  schema:
+                      type: string
+                  required: false
+                  description: XML Root element name. Mandatory if format is 'xml'.
             requestBody:
                 required: true
                 content:
@@ -53,7 +63,7 @@ paths:
                         schema:
                             type: object
             responses:
-                '200':
+                "200":
                     description: OK
                     content:
                         application/xml:
@@ -68,7 +78,7 @@ paths:
                         text/plain:
                             schema:
                                 type: string
-                '400':
+                "400":
                     description: Bad Request
                     content:
                         text/plain:
@@ -77,20 +87,47 @@ paths:
                                     value: Incorrect data format specified
                                 MissingRootParam:
                                     value: The parameter 'xmlRoot' is required for 'xml' conversion
+    /jsonTest:
+        post:
+            description: JSON transform test
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/TestJson"
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                "400":
+                    description: Bad Request
+                    content:
+                        text/plain:
+                            example: Required fields not found.
+                "405":
+                    description: Method not Allowed
+                    content:
+                        text/plain:
+                            example: "[Method] is not allowed for this path."
+
     /authTest:
         get:
             security:
-                -   basicAuth: []
+                - basicAuth: []
             responses:
-                '200':
+                "200":
                     description: OK
                     content:
-                      text/plain:
-                          schema:
-                              example: Basic Authentication successful
-                '401':
+                        text/plain:
+                            schema:
+                                example: Basic Authentication successful
+                "401":
                     description: Unauthorized
                     content:
-                      text/plain:
-                          schema:
-                              example: Username and/or Password invalid.
+                        text/plain:
+                            schema:
+                                example: Username and/or Password invalid.

@@ -18,6 +18,9 @@ dependencies = [
 	{org = "ballerina", name = "log"},
 	{org = "ballerina", name = "regex"}
 ]
+modules = [
+	{org = "ballerina", packageName = "auth", moduleName = "auth"}
+]
 
 [[package]]
 org = "ballerina"
@@ -126,6 +129,9 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.__internal"}
 ]
+modules = [
+	{org = "ballerina", packageName = "lang.array", moduleName = "lang.array"}
+]
 
 [[package]]
 org = "ballerina"
@@ -231,6 +237,9 @@ version = "1.2.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
+modules = [
+	{org = "ballerina", packageName = "regex", moduleName = "regex"}
+]
 
 [[package]]
 org = "ballerina"
@@ -274,8 +283,11 @@ org = "cferraz"
 name = "ballerina_lab"
 version = "0.1.0"
 dependencies = [
+	{org = "ballerina", name = "auth"},
 	{org = "ballerina", name = "http"},
+	{org = "ballerina", name = "lang.array"},
 	{org = "ballerina", name = "log"},
+	{org = "ballerina", name = "regex"},
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [

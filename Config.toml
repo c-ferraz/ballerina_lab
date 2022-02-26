@@ -1,9 +1,0 @@
-[[ballerina.auth.users]]
-username="user"
-password="password"
-scopes=["test"]
-
-[[ballerina.auth.users]]
-username="user2"
-password="password"
-scopes=["none"]

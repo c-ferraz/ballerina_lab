@@ -47,7 +47,7 @@ service / on default {
         consumes: ["application/json"],
         produces: ["text/plain"]
     }
-    resource function post user(@http:Payload json user) returns http:Created|http:BadRequest|error{
+    resource function post user(@http:Payload json user) returns http:Created|http:BadRequest{
 
 
         
@@ -59,14 +59,11 @@ service / on default {
 
         }
 
-        string firstName = check value:ensureType(user.firstName);
+        string firstName = checkpanic value:ensureType(user.firstName);
         
         http:Created r = {
         body: "User " + firstName + " created (But not really)."
         };
-    
-
-        
 
         return r;
     }
